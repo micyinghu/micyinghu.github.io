@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft 中文 Wiki</title>
+    <title>Air Space - Minecraft服务器Wiki</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,251 +11,276 @@
             padding: 0;
         }
         body {
-            background: #171717;
-            color: #e6e6e6;
-            font-family: "Segoe UI", sans-serif;
-            background-image: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)), url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23333333' fill-opacity='0.3'%3E%3Cpath d='M0 0h32v32H0V0zm32 32h32v32H32V32z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background: #121416;
+            color: #e2e2e2;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background-image: linear-gradient(rgba(0,0,0,0.86), rgba(0,0,0,0.86)), url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23283440' fill-opacity='0.25'%3E%3Cpath d='M0 0h32v32H0V0zm32 32h32v32H32V32z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         .container {
             display: flex;
             min-height: 100vh;
         }
-        /*侧边栏*/
+        /* 侧边栏 */
         .sidebar {
-            width: 240px;
-            background-color: #222222;
-            border-right: 3px solid #444;
-            padding: 20px 14px;
+            width: 250px;
+            background-color: #1b2026;
+            border-right: 3px solid #303a44;
+            padding: 22px 16px;
         }
         .sidebar h2 {
-            color: #60c859;
-            font-size:20px;
-            margin-bottom:16px;
-            border-bottom: 2px solid #3a7836;
+            color: #71cfff;
+            font-size:21px;
+            margin-bottom:18px;
+            border-bottom: 2px solid #2b5b80;
             padding-bottom:8px;
         }
-        .sidebar a {
+        .sidebar-item {
             display:block;
-            color:#cccccc;
+            color:#c2d0dd;
             text-decoration:none;
-            padding:7px 4px;
+            padding:8px 6px;
             border-left:3px solid transparent;
             cursor:pointer;
+            margin:3px 0;
         }
-        .sidebar a:hover {
-            background:#333;
-            color:#89e883;
-            border-left:3px solid #60c859;
+        .sidebar-item:hover {
+            background:#272f38;
+            color:#96d9ff;
+            border-left:3px solid #71cfff;
         }
-        .page-list{
-            margin-top:15px;
+        .sidebar-block{
+            margin-top:24px;
         }
-        /*主区域*/
+        .sidebar-block h4{
+            color:#a0b4c8;
+            margin-bottom:8px;
+        }
+        /* 主内容区域 */
         .main {
             flex:1;
-            padding:24px;
-            max-width: 1000px;
+            padding:26px;
+            max-width: 1050px;
         }
         .header-bar{
             display:flex;
             justify-content:space-between;
             align-items:center;
-            background:#292929;
-            padding:12px 18px;
-            border:2px solid #444;
-            border-radius:4px;
-            margin-bottom:20px;
+            background:#1e252d;
+            padding:14px 20px;
+            border:2px solid #303a44;
+            border-radius:5px;
+            margin-bottom:22px;
             flex-wrap:wrap;
-            gap:10px;
+            gap:12px;
         }
         .header-title{
-            color:#60c859;
-            font-size:24px;
+            color:#71cfff;
+            font-size:26px;
             font-weight:bold;
         }
+        .status-tag{
+            padding:4px 10px;
+            border-radius:3px;
+            font-size:13px;
+            margin-right:8px;
+        }
+        .status-normal{
+            background:#244036;
+            color:#76e8b4;
+        }
+        .status-admin{
+            background:#403224;
+            color:#ffc871;
+        }
         .btn {
-            padding: 7px 14px;
+            padding: 8px 14px;
             border: none;
-            border-radius: 2px;
-            background-color:#478b41;
+            border-radius: 3px;
+            background-color:#2b6fa8;
             color:white;
             cursor:pointer;
             font-weight:bold;
-            border:2px solid #2d5c29;
+            border:2px solid #1d4b72;
         }
         .btn:disabled{
-            background:#444;
-            border-color:#222;
+            background:#333840;
+            border-color:#22262b;
+            opacity:0.45;
             cursor:not-allowed;
-            opacity:0.5;
         }
         .btn:hover:not(:disabled){
-            background:#59a852;
+            background:#3486cc;
         }
         .btn-danger{
-            background:#9c3434;
-            border-color:#632020;
+            background:#943838;
+            border-color:#642424;
         }
         .btn-danger:hover:not(:disabled){
-            background:#b84242;
+            background:#b44545;
         }
         .btn-gray{
-            background:#555;
-            border-color:#333;
+            background:#3c4652;
+            border-color:#282f38;
         }
         .btn-gray:hover{
-            background:#666;
+            background:#4c5866;
         }
-        /*密码弹窗*/
+        /* 密码弹窗 */
         .modal-wrap{
             position:fixed;
             inset:0;
-            background:rgba(0,0,0,0.85);
+            background:rgba(0,0,0,0.88);
             display:flex;
             align-items:center;
             justify-content:center;
             z-index:999;
         }
         .modal-box{
-            background:#222;
-            border:3px solid #60c859;
-            padding:28px;
-            width:340px;
-            border-radius:4px;
+            background:#1b2026;
+            border:3px solid #71cfff;
+            padding:30px;
+            width:360px;
+            border-radius:6px;
         }
         .modal-box h3{
-            color:#60c859;
-            margin-bottom:18px;
+            color:#71cfff;
+            margin-bottom:20px;
             text-align:center;
-            font-size:22px;
+            font-size:23px;
         }
         .modal-box input{
             width:100%;
-            padding:9px;
+            padding:10px;
             margin:8px 0;
-            background:#111;
-            border:2px solid #444;
+            background:#121416;
+            border:2px solid #303a44;
             color:#fff;
+            font-size:15px;
         }
         .modal-box input:focus{
-            border-color:#60c859;
+            border-color:#71cfff;
             outline:none;
         }
         .modal-buttons{
-            margin-top:14px;
+            margin-top:16px;
             display:flex;
-            gap:8px;
+            gap:10px;
         }
-        /*编辑区*/
+        .modal-desc{
+            margin-top:14px;
+            color:#99a8b8;
+            font-size:13px;
+            text-align:center;
+        }
+        /* 编辑区域 */
         textarea{
             width:100%;
-            min-height:420px;
-            background:#111;
-            color:#eee;
-            border:2px solid #444;
-            padding:12px;
+            min-height:440px;
+            background:#121416;
+            color:#e2e2e2;
+            border:2px solid #303a44;
+            padding:14px;
             font-family:monospace;
             font-size:14px;
         }
         .view-area h1{
-            color:#60c859;
-            margin:12px 0;
-            border-bottom:2px solid #333;
-            padding-bottom:8px;
+            color:#71cfff;
+            margin:14px 0;
+            border-bottom:2px solid #272f38;
+            padding-bottom:10px;
         }
         .view-area h2{
-            color:#92e88c;
-            margin:10px 0;
+            color:#96d9ff;
+            margin:12px 0;
         }
         .view-area h3{
-            color:#b0f0ab;
-            margin:8px 0;
-        }
-        .view-area ul{
-            padding-left:28px;
+            color:#b7e6ff;
             margin:10px 0;
         }
+        .view-area ul{
+            padding-left:30px;
+            margin:12px 0;
+        }
         .view-area strong{
-            color:#fff;
+            color:#ffffff;
         }
         .wiki-link{
-            color:#72d66c;
+            color:#71cfff;
             cursor:pointer;
             text-decoration:underline;
         }
         .wiki-link:hover{
-            color:#b4ffae;
+            color:#b7e6ff;
         }
         .msg{
-            background:#244722;
-            color:#89e883;
-            padding:10px;
-            border:1px solid #478b41;
-            margin:12px 0;
+            background:#203848;
+            color:#96d9ff;
+            padding:11px;
+            border:1px solid #2b6fa8;
+            margin:14px 0;
+            border-radius:4px;
         }
         .msg-error{
-            background:#472222;
-            color:#ff9494;
-            border:1px solid #8b4141;
+            background:#402222;
+            color:#ff9c9c;
+            border:1px solid #943838;
         }
         .hidden{
             display:none !important;
         }
-        .newpage-row{
-            margin-top:20px;
-            padding-top:16px;
-            border-top:1px solid #444;
-        }
-        .backup-area{
-            margin-top:12px;
-        }
     </style>
 </head>
 <body>
-    <!-- 密码弹窗 -->
-    <div id="pwdModal" class="modal-wrap hidden">
+    <!-- 管理模式密码弹窗 -->
+    <div id="adminModal" class="modal-wrap hidden">
         <div class="modal-box">
-            <h3>编辑权限验证</h3>
-            <input id="editPassword" type="text" placeholder="输入编辑密码">
+            <h3>🔐 进入管理模式</h3>
+            <input id="adminPassword" type="text" placeholder="输入管理密码">
             <div class="modal-buttons">
-                <button class="btn" onclick="checkPassword()">确认解锁编辑</button>
-                <button class="btn btn-gray" onclick="closePwdModal()">取消</button>
+                <button class="btn" onclick="checkAdminPassword()">确认</button>
+                <button class="btn btn-gray" onclick="closeAdminModal()">取消</button>
             </div>
-            <p style="margin-top:12px; color:#aaa;font-size:13px;">密码正确后才能编辑、新建、删除页面</p>
+            <div class="modal-desc">密码正确后解锁页面编辑、新建、删除功能</div>
         </div>
     </div>
 
     <div class="container">
         <!-- 侧边导航 -->
         <aside class="sidebar">
-            <h2>📖 MC Wiki</h2>
-            <a onclick="openPage('首页')">🏠 首页</a>
-            <a onclick="openPage('方块')">🟩 方块</a>
-            <a onclick="openPage('生物')">👾 生物</a>
-            <a onclick="openPage('物品')">📦 物品</a>
-            <a onclick="openPage('附魔')">✨ 附魔</a>
-            <a onclick="showAllPages()">📜 所有页面</a>
+            <h2>🌌 Air Space Wiki</h2>
+            <div class="sidebar-item" onclick="openPage('服务器首页')">🏠 服务器首页</div>
+            <div class="sidebar-item" onclick="openPage('服务器介绍')">📖 服务器介绍</div>
+            <div class="sidebar-item" onclick="openPage('服务器规则')">📜 服务器规则</div>
+            <div class="sidebar-item" onclick="openPage('模组列表')">📦 模组列表</div>
+            <div class="sidebar-item" onclick="openPage('主城')">🏰 主城</div>
+            <div class="sidebar-item" onclick="openPage('玩家领地')">🗺 玩家领地</div>
+            <div class="sidebar-item" onclick="openPage('常用指令')">⌨ 常用指令</div>
+            <div class="sidebar-item" onclick="showAllPages()">📋 所有Wiki页面</div>
 
-            <div class="page-list">
-                <h4 style="margin-top:20px; color:#aaa;">新建页面</h4>
-                <input style="width:100%;padding:5px;background:#111;color:white;border:1px solid #444;" id="newPageName" placeholder="页面名称">
-                <button class="btn" style="width:100%;margin-top:6px;" onclick="createNewPage()" id="btnNewPage">新建</button>
+            <div class="sidebar-block">
+                <h4>新建页面</h4>
+                <input style="width:100%;padding:6px;background:#121416;color:#fff;border:1px solid #303a44;" id="newPageName" placeholder="页面名称">
+                <button class="btn" style="width:100%;margin-top:8px;" onclick="createNewPage()" id="btnNewPage">新建页面</button>
             </div>
-            <div class="backup-area">
-                <h4 style="margin-top:20px;color:#aaa;">数据备份</h4>
-                <button class="btn btn-gray" style="width:100%;margin-top:4px;" onclick="exportWiki()">导出备份</button>
-                <button class="btn btn-gray" style="width:100%;margin-top:4px;" onclick="importWiki()">导入备份</button>
+            <div class="sidebar-block">
+                <h4>数据备份</h4>
+                <button class="btn btn-gray" style="width:100%;margin-top:5px;" onclick="exportWiki()">导出备份</button>
+                <button class="btn btn-gray" style="width:100%;margin-top:5px;" onclick="importWiki()">导入备份</button>
             </div>
         </aside>
 
         <!-- 主内容 -->
         <main class="main">
             <div class="header-bar">
-                <div class="header-title" id="pageTitle">Minecraft Wiki</div>
                 <div>
-                    <button class="btn" onclick="requestEdit()" id="btnEdit">✏️编辑</button>
+                    <span class="header-title" id="pageTitle">Air Space 服务器Wiki</span>
+                    <span class="status-tag status-normal" id="modeStatus">浏览模式</span>
+                </div>
+                <div>
+                    <button class="btn" onclick="requestAdminMode()">🔐管理模式</button>
+                    <button class="btn" onclick="editPage(currentPage)" id="btnEdit">✏️编辑</button>
                     <button class="btn btn-danger" onclick="deletePage(currentPage)" id="btnDel">🗑删除</button>
-                    <button class="btn btn-gray" onclick="lockEdit()">🔒锁定编辑</button>
+                    <button class="btn btn-gray" onclick="exitAdminMode()" id="btnExitAdmin">退出管理</button>
                 </div>
             </div>
 
@@ -265,7 +290,7 @@
             <div id="viewArea" class="view-area"></div>
             <!-- 编辑区域 -->
             <div id="editArea" class="hidden">
-                <h3 style="color:#60c859;">编辑页面</h3>
+                <h3 style="color:#71cfff;">编辑Wiki页面</h3>
                 <textarea id="editor"></textarea>
                 <br>
                 <button class="btn" onclick="savePage()">💾保存页面</button>
@@ -275,67 +300,83 @@
     </div>
 
 <script>
-    let currentPage = "首页";
-    const EDIT_PASSWORD = "120117_wzmX";
-    let editUnlocked = false;
+    let currentPage = "服务器首页";
+    const ADMIN_PASSWORD = "120117_wzmX";
+    let isAdminMode = false;
 
-    //初始化本地存储
+    // 初始化本地Wiki数据
     function initStorage(){
-        if(!localStorage.getItem("mcWikiData")){
+        if(!localStorage.getItem("airspaceWikiData")){
             const defaultWiki = {
-                "首页":`# Minecraft Wiki
-欢迎来到我的世界中文维基！
+                "服务器首页":`# 🌌 Air Space 服务器 Wiki
+欢迎来到 Air Space Minecraft 服务器维基！
 
-> 静态本地版Wiki，内容保存在浏览器本地存储。
+> Air Space 是一个生存向MC服务器，包含专属模组与领地系统。
 
-## 分类导航
-- [方块](方块)
-- [生物](生物)
-- [物品](物品)
-- [附魔](附魔)
+## 快速导航
+- [服务器介绍](服务器介绍)
+- [服务器规则](服务器规则)
+- [模组列表](模组列表)
+- [主城](主城)
+- [玩家领地](玩家领地)
+- [常用指令](常用指令)
 
-## 编辑说明
-点击右上角编辑按钮，输入密码解锁编辑权限
-内部页面链接写法：\`[链接文字](页面名)\`
-Markdown支持：#标题，**加粗**，*斜体*，-列表`,
-                "方块":`# 方块
-## 草方块
-Minecraft最基础的自然方块，草原生物群系大量生成。
-- 锄头右键可以转为耕地
-- 黑暗环境会生成怪物
+> 普通访客只能浏览页面；进入管理模式后可编辑所有Wiki内容。
+内部链接写法：\`[文字](页面名)\`
+Markdown语法支持：#标题、**加粗**、*斜体*、-无序列表`,
 
-## 石头
-地下大量生成，可烧制为石头，合成工具。`,
-                "生物":`# 生物
-## 僵尸
-敌对亡灵生物，黑暗处生成，会攻击玩家。
-- 可以拾取地上装备
-- 阳光照射会燃烧
+                "服务器介绍":`# 服务器介绍
+## Air Space
+- 版本：Minecraft 1.20.1（模组服）
+- 类型：多人生存，领地保护，休闲冒险
+- 特色：自定义主城、资源世界、维度探索
 
-## 苦力怕
-潜行爆炸，没有声音预警，靠近玩家引爆。`,
-                "物品":`# 物品
-## 钻石
-珍贵矿石，地下深层生成，制作钻石装备、工具。
-## 铁锭
-冶炼铁矿石获得，基础装备原料。`,
-                "附魔":`# 附魔
-## 时运
-采集方块增加掉落数量，镐、铲、斧可用。
-## 效率
-加快挖掘方块速度。
-## 保护
-减少受到的全部伤害。`
+服务器定期重置资源世界，主世界长期保留玩家建筑。`,
+
+                "服务器规则":`# 服务器规则
+1. 禁止破坏他人领地内建筑、偷取物品。
+2. 禁止使用作弊客户端、外挂、透视模组。
+3. 禁止恶意刷屏、辱骂、引战。
+4. 禁止大规模机器造成服务器卡顿。
+5. 违规会依次给予警告、封禁。`,
+
+                "模组列表":`# 模组列表
+## 核心模组
+- 领地保护模组
+- 小地图模组
+- 装备耐久显示
+- 背包整理
+> 所有客户端模组需要在群内下载，不要自行添加额外作弊模组`,
+
+                "主城":`# 主城
+Air Space主城为出生点区域，提供基础传送、商店、公告板。
+- 禁止在主城私自建造建筑
+- 主城提供基础物资领取点
+- 主城可传送至资源世界`,
+
+                "玩家领地":`# 玩家领地
+领地用于保护玩家建筑，防止他人破坏。
+- 使用领地指令圈地
+- 领地内可以设置好友权限
+- 领地超出范围需要额外购买`,
+
+                "常用指令":`# 常用指令
+- /help 查看帮助
+- /claim 圈领地
+- /trust 给予好友领地权限
+- /home 设置家
+- /spawn 返回主城
+- /tpa 传送请求`
             };
-            localStorage.setItem("mcWikiData", JSON.stringify(defaultWiki));
+            localStorage.setItem("airspaceWikiData", JSON.stringify(defaultWiki));
         }
     }
 
-    //Wiki数据读写
-    function getWiki(){return JSON.parse(localStorage.getItem("mcWikiData"));}
-    function saveWiki(data){localStorage.setItem("mcWikiData", JSON.stringify(data));}
+    // 读写Wiki数据
+    function getWiki(){return JSON.parse(localStorage.getItem("airspaceWikiData"));}
+    function saveWiki(data){localStorage.setItem("airspaceWikiData", JSON.stringify(data));}
 
-    //Markdown渲染
+    // Markdown渲染
     function renderMD(md){
         let html = md
             .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
@@ -352,7 +393,7 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         return html;
     }
 
-    //页面跳转
+    // 打开页面
     function openPage(pageName){
         currentPage = pageName;
         document.getElementById("pageTitle").innerText = pageName;
@@ -361,51 +402,59 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         document.getElementById("messageBox").innerHTML = "";
 
         const wiki = getWiki();
-        const content = wiki[pageName] || `# ${pageName}\n\n页面不存在，解锁编辑后创建页面。`;
+        const content = wiki[pageName] || `# ${pageName}\n\n该页面暂未创建，进入管理模式后编辑创建。`;
         document.getElementById("viewArea").innerHTML = renderMD(content);
     }
 
-    //密码相关
-    function requestEdit(){
-        if(editUnlocked){
-            editPage();
+    // 管理模式密码校验
+    function requestAdminMode(){
+        if(isAdminMode){
+            showMsg("✅你已经处于管理模式");
+            return;
+        }
+        document.getElementById("adminModal").classList.remove("hidden");
+        document.getElementById("adminPassword").value = "";
+    }
+    function closeAdminModal(){
+        document.getElementById("adminModal").classList.add("hidden");
+    }
+    function checkAdminPassword(){
+        const inputPwd = document.getElementById("adminPassword").value.trim();
+        if(inputPwd === ADMIN_PASSWORD){
+            isAdminMode = true;
+            updateAdminUI();
+            closeAdminModal();
+            showMsg("✅成功进入管理模式，可编辑Wiki页面");
         }else{
-            document.getElementById("pwdModal").classList.remove("hidden");
-            document.getElementById("editPassword").value="";
+            showMsg("❌密码错误，无法进入管理模式","msg-error");
         }
     }
-    function closePwdModal(){
-        document.getElementById("pwdModal").classList.add("hidden");
+    function exitAdminMode(){
+        isAdminMode = false;
+        updateAdminUI();
+        showMsg("🔒已退出管理模式，编辑功能已锁定");
     }
-    function checkPassword(){
-        const inputPwd = document.getElementById("editPassword").value.trim();
-        if(inputPwd === EDIT_PASSWORD){
-            editUnlocked = true;
-            updateEditButtons();
-            closePwdModal();
-            showMsg("✅编辑权限已解锁，可以编辑/新建/删除页面");
-            editPage();
+    function updateAdminUI(){
+        document.getElementById("btnEdit").disabled = !isAdminMode;
+        document.getElementById("btnDel").disabled = !isAdminMode;
+        document.getElementById("btnNewPage").disabled = !isAdminMode;
+        const statusEl = document.getElementById("modeStatus");
+        if(isAdminMode){
+            statusEl.className = "status-tag status-admin";
+            statusEl.innerText = "管理模式";
         }else{
-            showMsg("❌密码错误，无法解锁编辑权限","msg-error");
+            statusEl.className = "status-tag status-normal";
+            statusEl.innerText = "浏览模式";
         }
-    }
-    function lockEdit(){
-        editUnlocked = false;
-        updateEditButtons();
-        showMsg("🔒编辑权限已锁定");
-    }
-    function updateEditButtons(){
-        document.getElementById("btnEdit").disabled = !editUnlocked;
-        document.getElementById("btnDel").disabled = !editUnlocked;
-        document.getElementById("btnNewPage").disabled = !editUnlocked;
     }
 
-    //编辑保存删除
+    // 编辑 / 保存 / 删除
     function editPage(){
+        if(!isAdminMode) return;
         const wiki = getWiki();
         document.getElementById("viewArea").classList.add("hidden");
         document.getElementById("editArea").classList.remove("hidden");
-        const content = wiki[currentPage] || `# ${currentPage}\n\n在这里编写MC维基内容...`;
+        const content = wiki[currentPage] || `# ${currentPage}\n\n在这里编写Air Space服务器Wiki内容`;
         document.getElementById("editor").value = content;
     }
     function savePage(){
@@ -416,15 +465,16 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         openPage(currentPage);
     }
     function deletePage(){
-        if(currentPage === "首页"){alert("不能删除首页");return;}
+        if(currentPage === "服务器首页"){alert("不能删除服务器首页！");return;}
         if(!confirm(`确定删除页面【${currentPage}】？`)) return;
         const wiki = getWiki();
         delete wiki[currentPage];
         saveWiki(wiki);
         showMsg("🗑页面已删除");
-        openPage("首页");
+        openPage("服务器首页");
     }
     function createNewPage(){
+        if(!isAdminMode) return;
         const name = document.getElementById("newPageName").value.trim();
         if(!name) return;
         document.getElementById("newPageName").value = "";
@@ -432,7 +482,7 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         editPage();
     }
 
-    //页面列表
+    // 列出全部页面
     function showAllPages(){
         const wiki = getWiki();
         let listHtml = "<h1>所有Wiki页面</h1><ul>";
@@ -444,7 +494,7 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         document.getElementById("editArea").classList.add("hidden");
     }
 
-    //备份导出导入
+    // 备份导出导入
     function exportWiki(){
         const wikiData = getWiki();
         const jsonStr = JSON.stringify(wikiData,null,2);
@@ -452,10 +502,10 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "mcwiki_backup.json";
+        a.download = "airspace_wiki_backup.json";
         a.click();
         URL.revokeObjectURL(url);
-        showMsg("💾备份文件已下载");
+        showMsg("💾备份文件下载完成");
     }
     function importWiki(){
         const input = document.createElement("input");
@@ -467,11 +517,11 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
             reader.onload = function(ev){
                 try{
                     const data = JSON.parse(ev.target.result);
-                    localStorage.setItem("mcWikiData",JSON.stringify(data));
-                    showMsg("✅导入成功，刷新页面");
-                    openPage("首页");
+                    localStorage.setItem("airspaceWikiData",JSON.stringify(data));
+                    showMsg("✅导入成功，页面已刷新");
+                    openPage("服务器首页");
                 }catch(err){
-                    showMsg("❌文件解析失败","msg-error");
+                    showMsg("❌文件解析失败，请确认是备份json文件","msg-error");
                 }
             }
             reader.readAsText(file);
@@ -483,10 +533,10 @@ Minecraft最基础的自然方块，草原生物群系大量生成。
         document.getElementById("messageBox").innerHTML = `<div class="${cls}">${text}</div>`;
     }
 
-    //启动
+    // 初始化启动
     initStorage();
-    updateEditButtons();
-    openPage("首页");
+    updateAdminUI();
+    openPage("服务器首页");
 </script>
 </body>
 </html>
