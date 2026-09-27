@@ -3,217 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简易Wiki</title>
+    <title>Minecraft 中文 Wiki</title>
     <style>
+        /* Minecraft 全局样式 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
         }
         body {
-            max-width: 920px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            line-height: 1.7;
+            background: #171717;
+            color: #e6e6e6;
+            font-family: "Segoe UI", sans-serif;
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23333333' fill-opacity='0.3'%3E%3Cpath d='M0 0h32v32H0V0zm32 32h32v32H32V32z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        nav {
-            background: #f4f5f7;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .container {
             display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
+            min-height: 100vh;
         }
-        a, .wiki-link {
-            color: #2563eb;
-            cursor: pointer;
-            text-decoration: none;
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 240px;
+            background-color: #222222;
+            border-right: 3px solid #444;
+            padding: 20px 14px;
         }
-        a:hover, .wiki-link:hover {
-            text-decoration: underline;
+        .sidebar h2 {
+            color: #60c859;
+            font-size:20px;
+            margin-bottom:16px;
+            border-bottom: 2px solid #3a7836;
+            padding-bottom:8px;
         }
-        button, .btn {
-            padding: 6px 12px;
+        .sidebar a {
+            display:block;
+            color:#cccccc;
+            text-decoration:none;
+            padding:7px 4px;
+            border-left:3px solid transparent;
+        }
+        .sidebar a:hover {
+            background:#333;
+            color:#89e883;
+            border-left:3px solid #60c859;
+        }
+        .page-list{
+            margin-top:15px;
+        }
+
+        /* 主内容区 */
+        .main {
+            flex:1;
+            padding:24px;
+            max-width: 1000px;
+        }
+        .header-bar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:#292929;
+            padding:12px 18px;
+            border:2px solid #444;
+            border-radius:4px;
+            margin-bottom:20px;
+        }
+        .header-title{
+            color:#60c859;
+            font-size:24px;
+            font-weight:bold;
+        }
+        .btn {
+            padding: 7px 14px;
             border: none;
-            border-radius: 5px;
-            background-color: #2563eb;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
+            border-radius: 2px;
+            background-color:#478b41;
+            color:white;
+            cursor:pointer;
+            font-weight:bold;
+            border:2px solid #2d5c29;
         }
-        .btn-danger {
-            background-color: #dc2626;
+        .btn:hover{
+            background:#59a852;
         }
-        textarea {
-            width: 100%;
-            min-height: 420px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            margin: 10px 0;
+        .btn-danger{
+            background:#9c3434;
+            border-color:#632020;
         }
-        .page-view {
-            padding: 10px;
+        .btn-danger:hover{
+            background:#b84242;
         }
-        .msg {
-            padding: 8px 12px;
-            background: #dcfce7;
-            color: #166534;
-            border-radius: 6px;
-            margin:10px 0;
+        .btn-gray{
+            background:#555;
+            border-color:#333;
         }
-        .new-page-form {
-            margin-top:20px;
-            padding-top:15px;
-            border-top:1px solid #ddd;
+
+        /* 登录弹窗 */
+        .modal-wrap{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:999;
         }
-        input {
-            padding:6px 8px;
-            border:1px solid #ccc;
+        .modal-box{
+            background:#222;
+            border:3px solid #60c859;
+            padding:28px;
+            width:340px;
             border-radius:4px;
         }
-        ul {
-            padding-left: 2rem;
-            margin: 0.5rem 0;
+        .modal-box h3{
+            color:#60c859;
+            margin-bottom:18px;
+            text-align:center;
+            font-size:22px;
         }
-        h1,h2,h3 {
-            margin:1rem 0 0.5rem;
+        .modal-box input{
+            width:100%;
+            padding:9px;
+            margin:8px 0;
+            background:#111;
+            border:2px solid #444;
+            color:#fff;
+        }
+        .modal-box input:focus{
+            border-color:#60c859;
+            outline:none;
+        }
+        .modal-buttons{
+            margin-top:14px;
+            display:flex;
+            gap:8px;
+        }
+        .switch-mode{
+            text-align:center;
+            margin-top:12px;
+            color:#aaa;
+        }
+        .switch-mode span{
+            color:#60c859;
+            cursor:pointer;
+        }
+
+        /* 编辑区域 */
+        textarea{
+            width:100%;
+            min-height:420px;
+            background:#111;
+            color:#eee;
+            border:2px solid #444;
+            padding:12px;
+            font-family:monospace;
+            font-size:14px;
+        }
+        .view-area h1{
+            color:#60c859;
+            margin:12px 0;
+            border-bottom:2px solid #333;
+            padding-bottom:8px;
+        }
+        .view-area h2{
+            color:#92e88c;
+            margin:10px 0;
+        }
+        .view-area h3{
+            color:#b0f0ab;
+            margin:8px 0;
+        }
+        .view-area ul{
+            padding-left:28px;
+            margin:10px 0;
+        }
+        .view-area strong{
+            color:#fff;
+        }
+        .wiki-link{
+            color:#72d66c;
+            cursor:pointer;
+            text-decoration:underline;
+        }
+        .wiki-link:hover{
+            color:#b4ffae;
+        }
+        .msg{
+            background:#244722;
+            color:#89e883;
+            padding:10px;
+            border:1px solid #478b41;
+            margin:12px 0;
+        }
+        .hidden{
+            display:none !important;
+        }
+        .newpage-row{
+            margin-top:20px;
+            padding-top:16px;
+            border-top:1px solid #444;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <a class="btn" onclick="openPage('Home')">🏠 首页</a>
-        <button onclick="editPage(currentPage)">✏️ 编辑</button>
-        <button class="btn-danger" onclick="deletePage(currentPage)">🗑 删除</button>
-        <span id="page-title" style="font-weight:bold; margin-left:10px;"></span>
-    </nav>
-
-    <div id="message"></div>
-
-    <div id="view-area" class="page-view"></div>
-    <div id="edit-area" style="display:none;">
-        <h3>编辑页面</h3>
-        <textarea id="editor"></textarea>
-        <br>
-        <button onclick="savePage()">💾 保存</button>
-        <button onclick="openPage(currentPage)">取消</button>
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="modal-wrap">
+        <div class="modal-box">
+            <h3>Minecraft Wiki 登录</h3>
+            <input id="userName" placeholder="用户名">
+            <input id="userPwd" type="password" placeholder="密码">
+            <div class="modal-buttons">
+                <button class="btn" onclick="login()">登录</button>
+                <button class="btn btn-gray" onclick="register()">注册账号</button>
+            </div>
+            <div class="switch-mode">
+                <span onclick="alert('注册：创建本地账号，仅保存在浏览器')">说明</span>
+            </div>
+        </div>
     </div>
 
-    <div class="new-page-form">
-        <h4>新建页面</h4>
-        <input type="text" id="new-page-name" placeholder="输入页面名称">
-        <button onclick="createNewPage()">新建</button>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <h2>📖 MC Wiki</h2>
+            <a onclick="openPage('首页')">🏠 首页</a>
+            <a onclick="openPage('方块')">🟩 方块</a>
+            <a onclick="openPage('生物')">👾 生物</a>
+            <a onclick="openPage('物品')">📦 物品</a>
+            <a onclick="openPage('附魔')">✨ 附魔</a>
+            <a onclick="showAllPages()">📜 所有页面</a>
+            <div class="page-list">
+                <h4 style="margin-top:20px; color:#aaa;">新建页面</h4>
+                <input style="width:100%;padding:5px;background:#111;color:white;border:1px solid #444;" id="newPageName" placeholder="页面名称">
+                <button class="btn" style="width:100%;margin-top:6px;" onclick="createNewPage()">新建</button>
+            </div>
+        </aside>
+
+        <!-- 主内容 -->
+        <main class="main">
+            <div class="header-bar">
+                <div class="header-title" id="pageTitle">Minecraft Wiki</div>
+                <div id="userInfo">
+                    <span id="usernameDisplay" style="margin-right:10px;"></span>
+                    <button class="btn" onclick="editPage(currentPage)">✏️编辑</button>
+                    <button class="btn btn-danger" onclick="deletePage(currentPage)">🗑删除</button>
+                    <button class="btn btn-gray" onclick="logout()">退出登录</button>
+                </div>
+            </div>
+
+            <div id="messageBox"></div>
+
+            <!-- 阅读区域 -->
+            <div id="viewArea" class="view-area"></div>
+            <!-- 编辑区域 -->
+            <div id="editArea" class="hidden">
+                <h3 style="color:#60c859;">编辑页面</h3>
+                <textarea id="editor"></textarea>
+                <br>
+                <button class="btn" onclick="savePage()">💾保存页面</button>
+                <button class="btn btn-gray" onclick="openPage(currentPage)">取消</button>
+            </div>
+        </main>
     </div>
 
 <script>
-// 当前打开的页面
-let currentPage = "Home";
+    let currentPage = "首页";
+    let loginUser = null;
 
-// 初始化：如果本地没有wiki数据，初始化Home页面
-if(!localStorage.getItem("wikiData")){
-    const initData = {
-        "Home": "# 欢迎来到简易Wiki\n\n这是纯前端Wiki网站，数据保存在浏览器本地存储。\n\n## 使用说明\n- 点击【编辑】修改内容\n- 使用 `[链接文字](页面名)` 创建Wiki内部跳转\n- 示例：[关于](About)\n\n- 加粗：**文字**\n- 斜体：*文字*\n- 列表：\n- 项目1\n- 项目2"
+    // 初始化本地存储
+    function initStorage(){
+        if(!localStorage.getItem("mcWikiUser")) localStorage.setItem("mcWikiUser", JSON.stringify({}));
+        if(!localStorage.getItem("mcWikiData")){
+            const defaultWiki = {
+                "首页":`# Minecraft Wiki
+欢迎来到我的世界中文维基！
+
+> 这是静态本地版Wiki，所有内容保存在你的浏览器本地。
+
+## 分类
+- [方块](方块)
+- [生物](生物)
+- [物品](物品)
+- [附魔](附魔)
+
+## 使用方法
+- 登录后可以编辑所有页面
+- 链接写法：\`[文字](页面名)\`
+- 加粗 **文字**，斜体 *文字*`,
+                "方块":`# 方块
+## 草方块
+Minecraft最基础的自然方块，在草原生物群系大量生成。
+
+特性：
+- 可以被锄头变为耕地
+- 光照不足会被怪物生成
+`,
+                "生物":`# 生物
+## 僵尸
+敌对亡灵生物，会攻击玩家。
+- 生成于黑暗区域
+- 可以拾取装备
+`,
+                "物品":`# 物品
+## 钻石
+珍贵矿石，用于制作钻石工具与装备。
+`,
+                "附魔":`# 附魔
+## 时运
+采集方块时有概率掉落更多物品。
+适用工具：镐、铲、斧。
+`
+            };
+            localStorage.setItem("mcWikiData", JSON.stringify(defaultWiki));
+        }
     }
-    localStorage.setItem("wikiData", JSON.stringify(initData));
-}
 
-// 获取全部wiki页面数据
-function getWiki(){
-    return JSON.parse(localStorage.getItem("wikiData"));
-}
-function saveWiki(data){
-    localStorage.setItem("wikiData", JSON.stringify(data));
-}
+    // 用户相关
+    function getUserDB(){return JSON.parse(localStorage.getItem("mcWikiUser"));}
+    function saveUserDB(db){localStorage.setItem("mcWikiUser", JSON.stringify(db));}
 
-// Markdown简易解析器（支持标题、加粗、斜体、列表、wiki内部链接）
-function renderMarkdown(md){
-    let html = md
-        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-        .replace(/^# (.*)$/gm, "<h1>$1</h1>")
-        .replace(/^## (.*)$/gm, "<h2>$1</h2>")
-        .replace(/^### (.*)$/gm, "<h3>$1</h3>")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        // wiki内部链接 [文字](页面名)
-        .replace(/\[(.+?)\]\((.+?)\)/g, `<span class="wiki-link" onclick="openPage('$2')">$1</span>`)
-        .replace(/^- (.*)$/gm, "<li>$1</li>")
-        .replace(/(<li>.*<\/li>)(\s*<li>)/g, "$1$2")
-        .replace(/((<li>.+<\/li>)(\s*<li>.+<\/li>)+)/g, "<ul>$1</ul>")
-        .replace(/\n/g,"<br>");
-    return html;
-}
-
-// 打开页面
-function openPage(pageName){
-    currentPage = pageName;
-    const wiki = getWiki();
-    document.getElementById("page-title").innerText = "页面：" + pageName;
-    document.getElementById("edit-area").style.display = "none";
-    document.getElementById("view-area").style.display = "block";
-
-    let content;
-    if(wiki[pageName]){
-        content = wiki[pageName];
-    }else{
-        content = `# ${pageName}\n\n页面不存在，点击编辑创建。`;
+    function register(){
+        const name = document.getElementById("userName").value.trim();
+        const pwd = document.getElementById("userPwd").value.trim();
+        if(!name || !pwd){alert("用户名密码不能为空");return;}
+        const users = getUserDB();
+        if(users[name]){alert("该用户名已存在");return;}
+        users[name] = {pwd:pwd};
+        saveUserDB(users);
+        alert("注册成功！现在可以登录");
     }
-    document.getElementById("view-area").innerHTML = renderMarkdown(content);
-    document.getElementById("message").innerText = "";
-}
 
-// 进入编辑模式
-function editPage(pageName){
-    const wiki = getWiki();
-    document.getElementById("view-area").style.display = "none";
-    document.getElementById("edit-area").style.display = "block";
-    let content = wiki[pageName] || `# ${pageName}\n\n在这里写页面内容...`;
-    document.getElementById("editor").value = content;
-}
-
-// 保存页面
-function savePage(){
-    const wiki = getWiki();
-    wiki[currentPage] = document.getElementById("editor").value;
-    saveWiki(wiki);
-    showMsg("页面保存成功！");
-    openPage(currentPage);
-}
-
-// 删除页面
-function deletePage(pageName){
-    if(pageName === "Home"){
-        showMsg("不能删除首页Home！");
-        return;
+    function login(){
+        const name = document.getElementById("userName").value.trim();
+        const pwd = document.getElementById("userPwd").value.trim();
+        const users = getUserDB();
+        if(!users[name] || users[name].pwd !== pwd){
+            alert("账号或密码错误");
+            return;
+        }
+        loginUser = name;
+        document.getElementById("loginModal").classList.add("hidden");
+        document.getElementById("usernameDisplay").innerText = "👤 "+loginUser;
+        openPage("首页");
     }
-    if(!confirm(`确定删除页面「${pageName}」？`)) return;
-    const wiki = getWiki();
-    delete wiki[pageName];
-    saveWiki(wiki);
-    showMsg("页面已删除");
-    openPage("Home");
-}
 
-// 新建页面
-function createNewPage(){
-    const name = document.getElementById("new-page-name").value.trim();
-    if(!name) {alert("请输入页面名称");return;}
-    document.getElementById("new-page-name").value = "";
-    openPage(name);
-    editPage(name);
-}
+    function logout(){
+        loginUser = null;
+        document.getElementById("loginModal").classList.remove("hidden");
+        document.getElementById("usernameDisplay").innerText = "";
+    }
 
-function showMsg(text){
-    document.getElementById("message").innerHTML = `<div class="msg">${text}</div>`;
-}
+    // Wiki页面数据
+    function getWiki(){return JSON.parse(localStorage.getItem("mcWikiData"));}
+    function saveWiki(data){localStorage.setItem("mcWikiData", JSON.stringify(data));}
 
-// 页面加载默认打开Home
-openPage("Home");
+    // Markdown渲染
+    function renderMD(md){
+        let html = md
+            .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+            .replace(/^# (.*)$/gm, "<h1>$1</h1>")
+            .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+            .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+            .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\*(.+?)\*/g, "<em>$1</em>")
+            .replace(/\[(.+?)\]\((.+?)\)/g, `<span class="wiki-link" onclick="openPage('$2')">$1</span>`)
+            .replace(/^- (.*)$/gm, "<li>$1</li>")
+            .replace(/(<li>.*<\/li>)(\s*<li>)/g, "$1$2")
+            .replace(/((<li>.+<\/li>)(\s*<li>.+<\/li>)+)/g, "<ul>$1</ul>")
+            .replace(/\n/g,"<br>");
+        return html;
+    }
+
+    function openPage(pageName){
+        if(!loginUser){
+            alert("请先登录！");
+            return;
+        }
+        currentPage = pageName;
+        document.getElementById("pageTitle").innerText = pageName;
+        document.getElementById("viewArea").classList.remove("hidden");
+        document.getElementById("editArea").classList.add("hidden");
+        document.getElementById("messageBox").innerHTML = "";
+
+        const wiki = getWiki();
+        const content = wiki[pageName] || `# ${pageName}\n\n这个页面还没有内容，点击编辑来创建。`;
+        document.getElementById("viewArea").innerHTML = renderMD(content);
+    }
+
+    function editPage(){
+        if(!loginUser) return;
+        const wiki = getWiki();
+        document.getElementById("viewArea").classList.add("hidden");
+        document.getElementById("editArea").classList.remove("hidden");
+        const content = wiki[currentPage] || `# ${currentPage}\n\n在这里编写MC维基内容...`;
+        document.getElementById("editor").value = content;
+    }
+
+    function savePage(){
+        if(!loginUser) return;
+        const wiki = getWiki();
+        wiki[currentPage] = document.getElementById("editor").value;
+        saveWiki(wiki);
+        showMsg("✅页面保存成功");
+        openPage(currentPage);
+    }
+
+    function deletePage(){
+        if(!loginUser) return;
+        if(currentPage === "首页"){alert("不能删除首页");return;}
+        if(!confirm(`确定删除页面【${currentPage}】？`)) return;
+        const wiki = getWiki();
+        delete wiki[currentPage];
+        saveWiki(wiki);
+        showMsg("🗑页面已删除");
+        openPage("首页");
+    }
+
+    function createNewPage(){
+        if(!loginUser) return;
+        const name = document.getElementById("newPageName").value.trim();
+        if(!name) return;
+        document.getElementById("newPageName").value = "";
+        openPage(name);
+        editPage();
+    }
+
+    function showAllPages(){
+        if(!loginUser) return;
+        const wiki = getWiki();
+        let listHtml = "<h1>所有Wiki页面</h1><ul>";
+        Object.keys(wiki).forEach(p=>{
+            listHtml += `<li><span class="wiki-link" onclick="openPage('${p}')">${p}</span></li>`;
+        })
+        listHtml += "</ul>";
+        document.getElementById("viewArea").innerHTML = listHtml;
+        document.getElementById("editArea").classList.add("hidden");
+    }
+
+    function showMsg(text){
+        document.getElementById("messageBox").innerHTML = `<div class="msg">${text}</div>`;
+    }
+
+    // 程序启动
+    initStorage();
 </script>
 </body>
 </html>
